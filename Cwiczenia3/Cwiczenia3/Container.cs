@@ -9,7 +9,7 @@ public class Container
     public string serialNumber { get; }
     public double maxWeight { get; }
 
-    private int _number = 1;
+    private static int _number = 1;
 
     public Container(char type, double weight, double height, double curbWeight, double depth,
         double maxWeight)
@@ -20,13 +20,13 @@ public class Container
         this.depth = depth;
         this.serialNumber = GenerateSerialNumber(type);
         this.maxWeight = maxWeight;
+        _number++;
     }
 
     private string GenerateSerialNumber(char type)
     {
-        string serialNumber = $"KON-{type}-";
+        string serialNumber = "KON-" + type + "-";
         serialNumber += _number;
-        _number++;
         return serialNumber;
     }
 
@@ -46,5 +46,10 @@ public class Container
     public string getSerialNumber()
     {
         return serialNumber;
+    }
+
+    public override string ToString()
+    {
+       return (this.serialNumber + " - cargo: " + weight + "/" + maxWeight + " kg");
     }
 }

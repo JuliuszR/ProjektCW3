@@ -2,51 +2,49 @@ namespace Cwiczenia3;
 
 public class Container
 {
-    protected double _weight;
-    private double _height;
-    private double _curbWeight;
-    private double _depth;
-    private string _serialNumber;
-    protected double _maxWeight;
+    public double weight { get; set; }
+    public double height { get; }
+    public double curbWeight { get; }
+    public double depth { get; }
+    public string serialNumber { get; }
+    public double maxWeight { get; }
 
     private int _number = 1;
 
-    public Container(double weight, double height, double curbWeight, double depth, string serialNumber, double maxWeight, int number)
+    public Container(char type, double weight, double height, double curbWeight, double depth,
+        double maxWeight)
     {
-        this._weight = weight;
-        this._height = height;
-        this._curbWeight = curbWeight;
-        this._depth = depth;
-        this._serialNumber = GenerateSerialNumber();
-        this._maxWeight = maxWeight;
-        this._number = number;
+        this.weight = weight;
+        this.height = height;
+        this.curbWeight = curbWeight;
+        this.depth = depth;
+        this.serialNumber = GenerateSerialNumber(type);
+        this.maxWeight = maxWeight;
     }
 
-    private string GenerateSerialNumber(string containerType)
+    private string GenerateSerialNumber(char type)
     {
-        string serialNumber = "KON-";
-        serialNumber += containerType.ToUpper() + "-";
+        string serialNumber = $"KON-{type}-";
         serialNumber += _number;
         _number++;
         return serialNumber;
     }
 
-    public void OffloadCargo()
+    public virtual void OffloadCargo()
     {
-        _weight = 0;
+        weight = 0;
     }
 
     public virtual void LoadCargo(double weight)
     {
-        if (weight > _maxWeight)
+        if (this.weight + weight > maxWeight)
             throw new OverfillException("Weight cannot be greater than max weight");
-        
-        this._weight = weight;
-        
+
+        this.weight += weight;
     }
 
     public string getSerialNumber()
     {
-        return _serialNumber;
+        return serialNumber;
     }
 }

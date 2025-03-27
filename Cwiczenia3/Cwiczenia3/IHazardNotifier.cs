@@ -2,5 +2,5 @@ namespace Cwiczenia3;
 
 public interface IHazardNotifier
 {
-    void Notify(Container container);
+    void Notify(string message);
 }

@@ -2,26 +2,31 @@ namespace Cwiczenia3;
 
 public class LiquidContainer : Container, IHazardNotifier
 {
-    private bool _hazard;
+    public bool IsHazard;
 
-    public LiquidContainer(double weight, double height, double curbWeight, double depth, string serialNumber, double maxWeight, int number, bool hazard) : base(weight, height, curbWeight, depth, serialNumber, maxWeight, number)
+    public LiquidContainer(double weight, double height, double curbWeight, double depth, double maxWeight,
+        bool IsHazard) : base('L', weight, height, curbWeight, depth, maxWeight)
     {
-        this._hazard = hazard;
+        this.IsHazard = IsHazard;
     }
 
-    public void Notify(Container container)
+    public void Notify(string message)
     {
-        Console.WriteLine("Hazard detected on container" + container.getSerialNumber());
+        Console.WriteLine(message + " " + this.getSerialNumber());
     }
-    
-     
+
+
     public override void LoadCargo(double weight)
     {
-        if ((_hazard && weight > _maxWeight*0.5) || (!_hazard && weight < _maxWeight*0.9 ))
+        double maxAllowed = IsHazard ? maxWeight * 0.5 : maxWeight * 0.9;
+
+        if (this.weight + weight > maxAllowed)
         {
-            Notify(this);
+            Console.WriteLine(this.weight);
+            Notify("Hazard detected on container");
+            throw new OverfillException("Weight cannot be greater than max weight");
         }
-        this._weight = weight;
+
+        base.LoadCargo(weight);
     }
-    
 }
